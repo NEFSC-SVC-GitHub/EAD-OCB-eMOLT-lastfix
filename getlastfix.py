@@ -195,7 +195,7 @@ def get_FVCOM_bottom_temp(lati,loni,dtime,layer): # gets modeled temp using GOM3
         urlfvcom = 'http://www.smast.umassd.edu:8080/thredds/dodsC/FVCOM/NECOFS/Forecasts/NECOFS_GOM3_FORECAST.nc'
         nc = netCDF4.Dataset(urlfvcom).variables
         #first find the index of the grid 
-        lat = nc['lat'][:]do
+        lat = nc['lat'][:]
         lon = nc['lon'][:]
         inode = nearlonlat(lon,lat,loni,lati)
         #second find the index of time

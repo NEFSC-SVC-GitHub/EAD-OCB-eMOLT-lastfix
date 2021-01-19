@@ -64,7 +64,7 @@ def get_doppio(lat=0,lon=0,depth='bottom',time='2018-11-12 12:00:00',fortype='te
         min_diff_index = netCDF4.date2index(date_time,doppio_time,select='nearest') 
         min_diff_time=abs(datetime.datetime(2017,11,1,0,0,0)+datetime.timedelta(hours=int(doppio_time[min_diff_index]))-date_time)
         #calculate the min,second small and third small distance and index
-        target_distance=zl.dist(lat1=lats[0][0],lon1=lons[0][0],lat2=lats[0][1],lon2=lons[0][1])
+        target_distance=zl.dist(lat1=lats[0][0],lon1=lons[0][0],lat2=lats[0][1],lon2=lons[0][1])+1.0 # added 1.0 Jan 2021 when I discovered I needed this additional amount
         index_1,index_2=zl.find_nd(target=target_distance,lat=lat,lon=lon,lats=lats,lons=lons)
 
         #calculate the optimal layer index added this section Feb 2020
@@ -110,9 +110,9 @@ def get_doppio(lat=0,lon=0,depth='bottom',time='2018-11-12 12:00:00',fortype='te
             break
         point_temp=fitting(point,lat,lon)
         if np.isnan(point_temp):
-            continue
-        if min_diff_time<datetime.timedelta(hours=1):
-            break
+            point_temp=doppio_temp[min_diff_index,layer_index,index_1,index_2]
+        #if min_diff_time<datetime.timedelta(hours=1):
+        #    break
     if fortype=='temperature':
         return point_temp
     else:

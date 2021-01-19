@@ -46,10 +46,15 @@ def get_gomofs_url(date):
     else:
         nstr='n003'
     # Jim changed 7/6/2020
-    url='https://www.ncei.noaa.gov/thredds/dodsC/model-gomofs-files/'+str(date.year)+'/'+str(date.month).zfill(2)+'/nos.gomofs.fields.'+nstr+'.'+date_str[:8]+'.'+tstr+'.nc'
-    
-    #url='http://opendap.co-ops.nos.noaa.gov/thredds/dodsC/NOAA/GOMOFS/MODELS/'\
-    #+date_str[:6]+'/nos.gomofs.fields.'+nstr+'.'+date_str[:8]+'.'+tstr+'.nc'
+    print(date)
+    print(datetime.date.today())
+    if date.date()<=datetime.datetime.now().date()-datetime.timedelta(days=7):
+        #if date<=datetime.datetime(2020,12,1,0,0,0): #old gomofs files are on NCEI
+        url='https://www.ncei.noaa.gov/thredds/dodsC/model-gomofs-files/'\
+            +str(date.year)+'/'+str(date.month).zfill(2)+'/nos.gomofs.fields.'+nstr+'.'+date_str[:8]+'.'+tstr+'.nc'
+    else: # recent files are stored on the co-ops server
+        url='https://opendap.co-ops.nos.noaa.gov/thredds/dodsC/NOAA/GOMOFS/MODELS/'\
+            +date_str[:4]+'/'+date_str[4:6]+'/'+date_str[6:8]+'/nos.gomofs.fields.'+nstr+'.'+date_str[:8]+'.'+tstr+'.nc'
     return url
 
 def get_gomofs_url_forecast(date,forecastdate=True):
